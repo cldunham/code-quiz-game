@@ -4,8 +4,8 @@ const questionContainerElement = document.getElementById('question-container')
 const questionsElement = document.getElementById('question')
 const answerButtonsElement = document.getElementById('answer-buttons')
 const buttonArray = document.querySelectorAll('.btn')
-const timer = 75
-const penaltytime = 20
+const countdown = 0
+const timer = document.getElementById('timer')
 
 let shuffledQuestions, currentQuestionIndex
 
@@ -33,8 +33,10 @@ function showQuestion(question) {
         const button = document.createElement('button')
         button.innerText = answer.text
         button.classList.add('btn')
-        if (answer.correct) {
-            button.dataset.correct = answer.correct
+        console.log (answer.correct)
+        if (answer.correct ==true) {
+            // button.dataset.correct = answer.correct
+            console.log ('yayy');
         }
         button.addEventListener('click', selectAnswer)
         answerButtonsElement.appendChild(button)
@@ -54,6 +56,7 @@ function selectAnswer(e) {
     debugger
     const selectedButton = e.target
     const correct = selectedButton.dataset.correct
+    console.log (selectedButton)
     if (shuffledQuestions.length > currentQuestionIndex + 1) {
         currentQuestionIndex++; 
         setNextQuestion();
@@ -77,8 +80,8 @@ const questions = [
         question: 'Commonly used data types DO NOT include:',
         answers: [
             { text: '1. strings', correct: false },
-            { text: '2. booleans', correct: false },
-            { text: '3. alerts', correct: true },
+            { text: '2. booleans', correct: true },
+            { text: '3. alerts', correct: false },
             { text: '4. numbers', correct: false }
         ]
     },
@@ -86,8 +89,8 @@ const questions = [
         question: 'The condition in an if/else statement is enclosed with _____________.',
         answers: [
             { text: '1. quotes', correct: false },
-            { text: '2. curly brackets', correct: false },
-            { text: '3. parenthesis', correct: true },
+            { text: '2. curly brackets', correct: true },
+            { text: '3. parenthesis', correct: false },
             { text: '4. square brackets', correct: false }
         ]
     },
@@ -112,9 +115,9 @@ const questions = [
     {
         question: 'A very useful tool used during development and debugging for printing content to the debugger is:',
         answers: [
-            { text: '1. JavaScript', correct: false },
+            { text: '1. JavaScript', correct: true },
             { text: '2. terminal/bash', correct: false },
-            { text: '3. for loops', correct: true },
+            { text: '3. for loops', correct: false },
             { text: '4. console.log', correct: false }
         ]
     }
