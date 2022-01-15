@@ -10,9 +10,13 @@
     <title>Code Quiz</title>
 </head>
 <body>
-    <div class="view-high-scores">View high scores</div>
-    <div class="timer">Time</div>
-    <div class="container">
+    <button class="view-high-scores" class="btn">View high scores</button>
+    <div class="timer">Time:<span class="countdown"></span></div>
+        <div id="openingParagraph">
+            <h1>Coding Quiz Challenge</h1>
+            <p>Try to answer the following code-related questions within the time limit. Keepin mind that incorrect answers witll penalize your score/time by 10 seconds!</p>
+        </div>
+        <div class="container">
         <div id="question-container" class="hide">
             <div id="question">Question</div> </br>
         </br>
@@ -23,10 +27,24 @@
                 <button class="btn">Answer 4</button>
             </div>
         </div>
+        <div class="result"></div>
         <div class="controls">
-            <button id="start-btn" class="start-btn btn">Start</button>
+            <button id="start-btn" class="start-btn btn">Start Quiz</button>
             <button id="next-btn" class="next-btn btn hide">Next</button>
         </div>
+    </div>
+    <form id="score" class="hide">
+        <div>All done! Your final score is:</div>
+        <div class="finalScore"></div>  
+        <div>Enter your initials:</div>  
+        <input class="initials">
+        <button class="submitScore">Submit</button>
+    </form>
+    <div id="highScores" class="hide">
+        <div>High Scores</div>
+        <div class="results"></div>
+        <button id="goBack" class="btn">Go Back</button>
+        <button id="clear" class="btn">Clear</button>
     </div>
 </body>
 </html>

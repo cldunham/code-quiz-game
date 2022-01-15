@@ -1,6 +1,7 @@
 *, *::before, *::after {
     box-sizing: border-box;
     font-family: Arial, Helvetica, sans-serif;
+    margin: 20px 20px 20px 20px;
 }
 
 body {
@@ -19,6 +20,10 @@ body {
     font-size: 20px;
     top: 0;
     left: 0;
+    color: blueviolet;
+    background-color: #fff;
+    outline: none;
+    border: none;
 }
 
 .timer {
@@ -55,7 +60,7 @@ body {
     padding: 10px 20px;
 }
 
-.controls {
+.controls #openingParagraph {
     display: flex;
     justify-content: center;
     align-items: center; 
@@ -64,4 +69,3 @@ body {
 .hide {
     display: none;
 }
-

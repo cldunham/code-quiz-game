@@ -4,121 +4,156 @@ const questionContainerElement = document.getElementById('question-container')
 const questionsElement = document.getElementById('question')
 const answerButtonsElement = document.getElementById('answer-buttons')
 const buttonArray = document.querySelectorAll('.btn')
-const countdown = 0
 const timer = document.getElementById('timer')
+var countDownTimer = 75
+var time;
+const finalScoreDisplay = document.getElementById('score')
+const finalScore =document.querySelector('.finalScore')
+const submitScore = document.querySelector('.submitScore')
+const initials = document.querySelector('.initials')
+const viewScores = document.querySelector('.view-high-scores')
+const highScores = document.getElementById('highScores')
+const openingParagraph = document.getElementById('openingParagraph')
 
 let shuffledQuestions, currentQuestionIndex
 
 startButton.addEventListener('click', startGame)
 
 function startGame() {
-    debugger 
+    time = setInterval(() => {
+        countDownTimer = countDownTimer - 1
+        if (countDownTimer <= 0) {
+            endGame()
+        }
+        else {
+        document.querySelector('.countdown').textContent = countDownTimer
+        }
+    }, 1000);
     startButton.classList.add('hide')
     shuffledQuestions = questions.sort(() => Math.random() - .5)
     currentQuestionIndex = 0
     questionContainerElement.classList.remove('hide')
+    openingParagraph.classList.add('hide')
     setNextQuestion()
 }
 
 function setNextQuestion() {
-    debugger
     resetState()
     showQuestion(shuffledQuestions[currentQuestionIndex])
 }
 
 function showQuestion(question) {
-    debugger
     questionsElement.innerText = question.question
-    question.answers.forEach(answer => {
+    question.choices.forEach(answer => {
         const button = document.createElement('button')
-        button.innerText = answer.text
+        button.textContent = answer
         button.classList.add('btn')
-        console.log (answer.correct)
-        if (answer.correct ==true) {
-            // button.dataset.correct = answer.correct
-            console.log ('yayy');
-        }
         button.addEventListener('click', selectAnswer)
         answerButtonsElement.appendChild(button)
     })
 }
 
 function resetState() {
-    debugger
     nextButton.classList.add('hide')
     while (answerButtonsElement.firstChild) {
         answerButtonsElement.removeChild
-        (answerButtonsElement.firstChild)
+            (answerButtonsElement.firstChild)
     }
 }
 
 function selectAnswer(e) {
-    debugger
-    const selectedButton = e.target
-    const correct = selectedButton.dataset.correct
-    console.log (selectedButton)
-    if (shuffledQuestions.length > currentQuestionIndex + 1) {
-        currentQuestionIndex++; 
-        setNextQuestion();
-    } else {
-        startButton.innerText = 'Restart'
-        startButton.classList.remove('hide')
-    }
-} 
 
-function setStatusClass(element, correct) {
-    debugger
-    if (correct) {
-        element,classList.add('correct')
-    } else {
-        element.classList.add('wrong')
+    const selectedButton = e.target.textContent
+    var correctAnswer = shuffledQuestions[currentQuestionIndex].answer
+    if (selectedButton === correctAnswer) {
+        document.querySelector('.result').textContent = 'Correct'
     }
+    else {
+        document.querySelector('.result').textContent = 'Wrong'
+        countDownTimer=countDownTimer-20
+    }
+    setTimeout(() => {
+        if (shuffledQuestions.length > currentQuestionIndex + 1) {
+            currentQuestionIndex++;
+            setNextQuestion();
+        } else {
+            endGame()
+        }
+        document.querySelector('.result').textContent = ''
+    }, 2000);
+
 }
 
 const questions = [
     {
         question: 'Commonly used data types DO NOT include:',
-        answers: [
-            { text: '1. strings', correct: false },
-            { text: '2. booleans', correct: true },
-            { text: '3. alerts', correct: false },
-            { text: '4. numbers', correct: false }
-        ]
+        choices: [
+            'strings',
+            'booleans',
+            'alerts',
+            'numbers'
+        ],
+        answer: 'booleans'
     },
     {
         question: 'The condition in an if/else statement is enclosed with _____________.',
-        answers: [
-            { text: '1. quotes', correct: false },
-            { text: '2. curly brackets', correct: true },
-            { text: '3. parenthesis', correct: false },
-            { text: '4. square brackets', correct: false }
-        ]
+        choices: [
+            'quotes',
+            'curly brackets',
+            'parenthesis',
+            'square brackets'
+        ],
+        answer: 'curly brackets'
     },
-    {
-        question: 'Arrays in JavaScript can be used to store ____________.',
-        answers: [
-            { text: '1. numbers and strings', correct: false },
-            { text: '2. other arrays', correct: false },
-            { text: '3. booleans', correct: true },
-            { text: '4. all of the above', correct: false }
-        ]
-    },
-    {
-        question: 'String values must be enclosed within ______________ when being assigned to variables.',
-        answers: [
-            { text: '1. commas', correct: false },
-            { text: '2. curly brackets', correct: false },
-            { text: '3. quotes', correct: true },
-            { text: '4. parenthesis', correct: false }
-        ]
-    },
-    {
-        question: 'A very useful tool used during development and debugging for printing content to the debugger is:',
-        answers: [
-            { text: '1. JavaScript', correct: true },
-            { text: '2. terminal/bash', correct: false },
-            { text: '3. for loops', correct: false },
-            { text: '4. console.log', correct: false }
-        ]
-    }
+    //     {
+    //         question: 'Arrays in JavaScript can be used to store ____________.',
+    //         answers: [
+    //             { text: '1. numbers and strings', correct: false },
+    //             { text: '2. other arrays', correct: false },
+    //             { text: '3. booleans', correct: true },
+    //             { text: '4. all of the above', correct: false }
+    //         ]
+    //     },
+    //     {
+    //         question: 'String values must be enclosed within ______________ when being assigned to variables.',
+    //         answers: [
+    //             { text: '1. commas', correct: false },
+    //             { text: '2. curly brackets', correct: false },
+    //             { text: '3. quotes', correct: true },
+    //             { text: '4. parenthesis', correct: false }
+    //         ]
+    //     },
+    //     {
+    //         question: 'A very useful tool used during development and debugging for printing content to the debugger is:',
+    //         answers: [
+    //             { text: '1. JavaScript', correct: true },
+    //             { text: '2. terminal/bash', correct: false },
+    //             { text: '3. for loops', correct: false },
+    //             { text: '4. console.log', correct: false }
+    //         ]
+    //     }
 ]
+
+    function endGame() {
+        document.querySelector('.countdown').textContent = countDownTimer
+        clearInterval(time);
+        questionContainerElement.classList.add('hide')
+        finalScoreDisplay.classList.remove('hide')
+        finalScore.textContent = countDownTimer
+    }
+
+    
+    submitScore.addEventListener('click', function (e) {
+        e.preventDefault()
+        let results = JSON.parse(localStorage.getItem("scores")) || []
+        results.push ({intials: initials.value, score: countDownTimer})
+        localStorage.setItem("scores", JSON.stringify(results))
+        
+    })
+
+    viewScores.addEventListener('click', function (){
+        finalScoreDisplay.classList.add('hide')
+        highScores.classList.remove('hide')
+        openingParagraph.classList.add('hide')
+        startButton.classList.add('hide')
+    })
