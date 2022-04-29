@@ -32,7 +32,7 @@ The score can be recorded at the end with initials and the "View high score" but
 
 ![codeQuiz 3](https://user-images.githubusercontent.com/89229908/165873080-d462f8c1-b4c7-43af-b133-c84080a2709f.JPG)
 
-The deployed url is 
+The deployed url is https://cldunham.github.io/code-quiz-game/
 
 
 
