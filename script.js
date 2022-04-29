@@ -5,7 +5,7 @@ const questionsElement = document.getElementById('question')
 const answerButtonsElement = document.getElementById('answer-buttons')
 const buttonArray = document.querySelectorAll('.btn')
 const timer = document.getElementById('timer')
-var countDownTimer = 75
+let countDownTimer = 75
 var time;
 const finalScoreDisplay = document.getElementById('score')
 const finalScore =document.querySelector('.finalScore')
@@ -14,16 +14,14 @@ const initials = document.querySelector('.initials')
 const viewScores = document.querySelector('.view-high-scores')
 const highScores = document.getElementById('highScores')
 const openingParagraph = document.getElementById('openingParagraph')
+const clear = document.getElementById('clear')
 
 let shuffledQuestions, currentQuestionIndex
 
 startButton.addEventListener('click', startGame)
 
-startButton.addEventListener('click', function() {
-    openingParagraph.classList.add('hide')
-})
-
 function startGame() {
+    countDownTimer = 75
     time = setInterval(() => {
         countDownTimer = countDownTimer - 1
         if (countDownTimer <= 0) {
@@ -34,11 +32,18 @@ function startGame() {
         }
     }, 1000);
     startButton.classList.add('hide')
+    openingParagraph.classList.add('hide');
     shuffledQuestions = questions.sort(() => Math.random() - .5)
     currentQuestionIndex = 0
     questionContainerElement.classList.remove('hide')
     setNextQuestion()
 }
+
+document.getElementById('goBack').addEventListener("click", function(){
+    startButton.classList.remove('hide')
+    openingParagraph.classList.remove('hide')
+    highScores.classList.add('hide')
+})
 
 function setNextQuestion() {
     resetState()
@@ -95,7 +100,7 @@ const questions = [
             'alerts',
             'numbers'
         ],
-        answer: 'booleans'
+        answer: 'alerts'
     },
     {
         question: 'The condition in an if/else statement is enclosed with _____________.',
@@ -105,39 +110,43 @@ const questions = [
             'parenthesis',
             'square brackets'
         ],
-        answer: 'curly brackets'
+        answer: 'parenthesis'
     },
-    //     {
-    //         question: 'Arrays in JavaScript can be used to store ____________.',
-    //         answers: [
-    //             { text: '1. numbers and strings', correct: false },
-    //             { text: '2. other arrays', correct: false },
-    //             { text: '3. booleans', correct: true },
-    //             { text: '4. all of the above', correct: false }
-    //         ]
-    //     },
-    //     {
-    //         question: 'String values must be enclosed within ______________ when being assigned to variables.',
-    //         answers: [
-    //             { text: '1. commas', correct: false },
-    //             { text: '2. curly brackets', correct: false },
-    //             { text: '3. quotes', correct: true },
-    //             { text: '4. parenthesis', correct: false }
-    //         ]
-    //     },
-    //     {
-    //         question: 'A very useful tool used during development and debugging for printing content to the debugger is:',
-    //         answers: [
-    //             { text: '1. JavaScript', correct: true },
-    //             { text: '2. terminal/bash', correct: false },
-    //             { text: '3. for loops', correct: false },
-    //             { text: '4. console.log', correct: false }
-    //         ]
-    //     }
+    {
+         question: 'Arrays in JavaScript can be used to store ____________.',
+         choices: [
+             'numbers and strings',
+             'other arrays',
+             'booleans',
+             'all of the above'
+         ],
+        answer: 'all of the above'
+    },
+    {
+        question: 'String values must be enclosed within ______________ when being assigned to variables.',
+        choices: [
+            'commas',
+            'curly brackets',
+            'quotes',
+            'parenthesis'
+        ],
+        answer: 'quotes'
+    },
+    {
+        question: 'A very useful tool used during development and debugging for printing content to the debugger is:',
+        choices: [
+            'JavaScript',
+            'terminal/bash',
+            'for loops',
+            'console.log'
+            ],
+        answer: 'console.log'
+    }
 ]
 
     function endGame() {
-        document.querySelector('.countdown').textContent = countDownTimer
+        debugger
+        document.querySelector('.countdown').textContent = ""
         clearInterval(time);
         questionContainerElement.classList.add('hide')
         finalScoreDisplay.classList.remove('hide')
@@ -146,16 +155,40 @@ const questions = [
 
     
     submitScore.addEventListener('click', function (e) {
+        debugger
         e.preventDefault()
         let results = JSON.parse(localStorage.getItem("scores")) || []
-        results.push ({intials: initials.value, score: countDownTimer})
+        results.push ({initials: initials.value, score: countDownTimer})
         localStorage.setItem("scores", JSON.stringify(results))
         
     })
 
-    viewScores.addEventListener('click', function (){
+    viewScores.addEventListener('click', viewHighScores)
+
+    clear.addEventListener('click', function (){
+        localStorage.clear() 
+        viewHighScores()
+    })
+
+    function viewHighScores (){
+        debugger
+        if (time) endGame()
         finalScoreDisplay.classList.add('hide')
         highScores.classList.remove('hide')
         openingParagraph.classList.add('hide')
         startButton.classList.add('hide')
-    })
+        let results = JSON.parse(localStorage.getItem("scores")) || []
+        document.querySelector(".results").textContent=""
+        for (let i=0; i<results.length; i++) {
+            var initials = results[i].initials
+            var score = results[i].score
+            var div = document.createElement('div')
+           // var displayInitials = document.createElement('p')
+            var displayScores = document.createElement('p')
+            //div.appendChild(displayInitials)
+            div.appendChild(displayScores)
+            //displayInitials.textContent=initials
+            displayScores.textContent=`${initials} - ${score}`
+            document.querySelector(".results").appendChild(div)
+        }
+    }
